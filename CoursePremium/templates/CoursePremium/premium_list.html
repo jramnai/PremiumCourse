@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h2>Modal Example</h2>
+
+<table>
+    <tr>
+        <th>Username</th>
+        <th>State</th>
+        <th>Action</th>
+    </tr>
+    <tr>
+        {% for premium in premiums %}
+            <td>{{ premium.user }}</td>
+            <td id="premium_state">{{ premium.state }}</td>
+            <td>
+                <!-- Trigger/Open The Modal -->
+                <button id="myBtn">Open Modal</button>
+            </td>
+        
+    </tr>
+</table>
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form action="{% url 'CoursePremium:update_state' %}" method="GET">
+        <select id="state" name="state">
+            {% for state in states %}
+                <option values="{{ state }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+        <div class="submit" style="padding-top:20px;">
+            <input id="submit" type="submit" value="Update">
+        </div>
+    </form>
+  </div>
+        {% endfor %}
+</div>
+
+<script>1
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+
+// Get the button that opens the modal
+var btn2 = document.getElementById("submit");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+btn2.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+var sel = document.getElementById("state");
+
+var premium_state = document.getElementById("premium_state");
+
+for(i=0;i<sel.options.length;i++) { 
+    if(sel.value==premium_state.innerText){ 
+        break; 
+    } 
+
+    // Select index 
+    sel.options.selectedIndex = i;
+}
+</script>
+
+</body>
+</html>
