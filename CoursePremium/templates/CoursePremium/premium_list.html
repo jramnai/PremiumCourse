@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
 
@@ -75,10 +77,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-    <form action="{% url 'CoursePremium:update_state' %}" method="GET">
-        <select id="state" name="state">
+    <!-- <form action="{% url 'CoursePremium:update_state' %}" method="GET">
+     -->    <select id="state" name="state">
             {% for state in states %}
-                <option values="{{ state }}">{{ state }}</option>
+                <option value="{{ state }}">{{ state }}</option>
             {% endfor %}
         </select>
         <div class="submit" style="padding-top:20px;">
@@ -89,7 +91,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
         {% endfor %}
 </div>
 
-<script>1
+<script>
 // Get the modal
 var modal = document.getElementById('myModal');
 
@@ -110,6 +112,32 @@ btn.onclick = function() {
 
 btn2.onclick = function() {
     modal.style.display = "none";
+    var cmb = document.getElementById('state');
+    var selItems = "";
+    for(i=0;i<cmb.options.length;i+=1){
+      if(cmb.options[i].selected){
+        selItems = selItems + cmb.options[i].value + ",";
+      }
+    }
+    // Remove the last splitter
+    selItems = selItems.substr(0,selItems.length-1);
+   
+
+    var ajax_res;
+    $.ajax(
+    {
+        type:"GET",
+        url: "/update_state",
+        data:{
+                 id_state: selItems
+        },
+        success: function( data ) 
+        {
+            ajax_res =data
+            $( '#premium_state' ).text(data);            
+        }
+
+     })
 }
 
 // When the user clicks on <span> (x), close the modal

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, render_to_response
 from .models import Premium
+from django.http import HttpResponse
 
 # Create your views here.
 def request_course_creator(request):
@@ -72,13 +73,13 @@ def premium_list(request):
 
 def update_state(request):
     
-    t_state = str(request.GET['state'])
+    t_state = str(request.GET['id_state'])
 
     t_id = request.user.id
     obj = Premium.objects.get(id=t_id)
     obj.state = t_state
     obj.save()
-    return premium_list(request)
+    return HttpResponse(t_state) # Sending an success response
 
 
 # @receiver(post_init, sender=Premium)
